@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "population-algorithm-experiment"
+version = "0.1.0"
+description = "Experimento de performance usando algoritmos populacionais evolutivos para resolver o problema da mochila 0-1"
+authors = ["Carlos Mondo <csvmondo@gmail.com>"]
+license = "Unlicense"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+toml = "^0.10.2"
+pendulum = "^2.1.2"
+matplotlib = "^3.4.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+autopep8 = "^1.5.7"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
