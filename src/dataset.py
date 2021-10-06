@@ -24,7 +24,10 @@ class Dataset:
 
     def validate_length(self):
         if (len(self.weights_objects) != len(self.profits_objects)) or (len(self.weights_objects) != len(self.optimal_selection_weights)):
-            raise ValueError("The length of attr lists is inconsistent")
+            raise ValueError(f"""The length of attr lists is inconsistent\n
+Weights len: {len(self.weights_objects)}\n
+Profits len: {len(self.profits_objects)}\n
+Optimal Selection len: {len(self.optimal_selection_weights)}""")
 
     def validate_optimal_selection_weights_items(self):
         for i in self.optimal_selection_weights:

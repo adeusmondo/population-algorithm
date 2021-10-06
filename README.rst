@@ -36,3 +36,21 @@ poetry shell
 ```
 
 Este comando ira criar a `virtual env` do projeto e inicializar ela.
+
+Para executar o projeto, estando na pasta raiz você realizar o seguinte comando:
+
+```sh
+python3 src --debug
+```
+
+No qual o parametro `--debug` executa apenas uma vez o algoritmo com valores padrões, no qual você não utiliza nenhum dos Benchmarks.
+
+Você tambem pode executar da seguinte maneira
+```sh
+python3 src -dt one 30 --reset-gen
+```
+
+O parametro `-dt {one}` serve para você selecionar um entre os oitro benchmarks: one, two, three, four, five, six, seven, eight.
+O segundo parametro, que se trata de um numério serve para você informar quantas execuções seja realizar.
+O terceiro parametro serve para você resetar as gerações a cada repetição de execução.
+
