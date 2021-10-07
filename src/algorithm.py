@@ -6,7 +6,7 @@ class BinaryBackpack(ReaderConfig):
             self, 
             penality = 25, 
             population_size = 4, 
-            total_amount_valuations = 20, 
+            total_amount_valuations = 30, 
             percentage_performing_mutation = 3,
             dt_section = "one",
             dataset = None
@@ -22,7 +22,6 @@ class BinaryBackpack(ReaderConfig):
         self.total_amount_valuations = total_amount_valuations
         self.percentage_performing_mutation = percentage_performing_mutation
         self._dt_section = dt_section
-
         self.reset_params()
         
     def reset_params(self):
@@ -40,10 +39,6 @@ class BinaryBackpack(ReaderConfig):
             self._next_population.append([0] * self._solution_size)
 
         self._next_population.append([0] * self._solution_size)
-
-        self._best_fitness_generation = []
-        self._avg_fitness_generation = []
-        self._worst_fitness_generation = []
 
     def objective_function(self, solution):
         _fitness = 0
@@ -78,7 +73,7 @@ class BinaryBackpack(ReaderConfig):
         _index_best_solution = 0
         for i in range(self.population_size):
             if self._fitness[_index_best_solution] < self._fitness[i]:
-                _index_best_solution = i
+               _index_best_solution = i
         
         return _index_best_solution
 
@@ -118,14 +113,14 @@ class BinaryBackpack(ReaderConfig):
         del self._next_population[_worse]
         del self._fitness_next_population[_worse]
 
-        self._population = self._next_population
-        self._fitness = self._fitness_next_population
+        _population = self._next_population
+        _fitness = self._fitness_next_population
 
         self._next_population.append(self._next_population[0])
         self._fitness_next_population.append(self._fitness_next_population[0])
 
     def stop_criterion_reached(self, current_amount_valuations):
-        return self._current_amount_valuations >= self.total_amount_valuations
+        return current_amount_valuations >= self.total_amount_valuations
 
     def report_convergence_generation(self):
         self._best_fitness_generation.append(self._fitness[self.identify_better_solution()])
@@ -137,20 +132,17 @@ class BinaryBackpack(ReaderConfig):
 
         self._avg_fitness_generation.append(_avg/len(self._fitness))
 
-    def execute(self, repeat = 1, reset_gen = False):
+    def execute(self, repeat = 1):
         self._best_fitness = []
         self._avg_fitness = []
         self._worst_fitness = []
 
-        repeat = int(repeat)
+        self._best_fitness_generation = []
+        self._avg_fitness_generation = []
+        self._worst_fitness_generation = []
         _repeat_counter = 0
         while not _repeat_counter >= repeat:
-            if reset_gen:
-                self._best_fitness = []
-                self._avg_fitness = []
-                self._worst_fitness = []
 
-            self.reset_params()
             self.generate_initial_solution()
             self.evaluate_population()
 
@@ -170,12 +162,13 @@ class BinaryBackpack(ReaderConfig):
                 _counter += 1
             
             _best_solution = self.identify_better_solution()
-            print("Melhor individuo = ", self._population[_best_solution])
-            print("Fitness = ", self._fitness[_best_solution])
-            
-            self._best_fitness.extend(self._best_fitness_generation)
-            self._avg_fitness.extend(self._avg_fitness_generation)
-            self._worst_fitness.extend(self._worst_fitness_generation)
+            _worst_soluiton = self.identify_worst_solution_current_population()
+            _avg_solution = (self._fitness[_best_solution] + self._fitness[_worst_soluiton]) / 2
+
+            self._best_fitness.append(self._fitness[_best_solution])
+            self._avg_fitness.append(_avg_solution)
+            self._worst_fitness.append(self._fitness[_worst_soluiton])
 
             _repeat_counter += 1
-            
+
+        

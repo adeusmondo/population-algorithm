@@ -18,9 +18,9 @@ class BinaryBackpackPlot(BinaryBackpack):
         plt.xlabel("Geração")
         plt.ylabel("Fitness")
 
-        ax.plot(self._best_fitness, label="Melhor")
-        ax.plot(self._avg_fitness, label="Média")
-        ax.plot(self._worst_fitness, label="Pior")
+        ax.plot(self._best_fitness_generation, label="Melhor")
+        ax.plot(self._avg_fitness_generation, label="Média")
+        ax.plot(self._worst_fitness_generation, label="Pior")
         ax.grid(False)
         plt.savefig(f"output/plot_population_convergence_{self._dt_section}.jpg", bbox_inches='tight', dpi=150)
         plt.close() 
@@ -52,23 +52,7 @@ class BinaryBackpackPlot(BinaryBackpack):
         plt.savefig(f"output/plot_box_plot_{self._dt_section}.jpg", bbox_inches='tight', dpi=150)
         plt.close() 
 
-    def plot_error_bar(self):
-        arrys = [
-            ("best_fitness", self._best_fitness),
-            ("avg_fitness", self._avg_fitness),
-            ("worst_fitness", self._worst_fitness),
-        ]
-        for name, data in arrys:
-            x = np.array(data)
-            y = np.power(x, 2) # Effectively y = x**2
-            error = 0.1 + 0.2 * x
-            plt.errorbar(x, y, error, linestyle='None', marker='^')
-
-            plt.savefig(f"output/plot_{name}_error_bar_{self._dt_section}.jpg", bbox_inches='tight', dpi=150)
-            plt.close() 
-
     def execute(self, **kwargs):
         super().execute(**kwargs)
         self.plot_population_convergence()
         self.plot_box_plot()
-        self.plot_error_bar()
