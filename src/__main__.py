@@ -1,7 +1,7 @@
 import sys
 
-from src.plot import BinaryBackpackPlot
-from src.dataset import Dataset
+from plot import BinaryBackpackPlot
+from dataset import Dataset
 
 if __name__ == "__main__":
     print("Running experiment...")

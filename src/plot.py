@@ -1,10 +1,8 @@
-from src.algorithm import BinaryBackpack
+from algorithm import BinaryBackpack
 
-import pathlib
 import statistics
 
 import matplotlib.pyplot as plt
-import numpy as np
 
 class BinaryBackpackPlot(BinaryBackpack):
     def __init__(self, **kwargs):

@@ -1,4 +1,4 @@
-from src.config import ReaderConfig
+from config import ReaderConfig
 import random
 
 class BinaryBackpack(ReaderConfig):
@@ -77,7 +77,21 @@ class BinaryBackpack(ReaderConfig):
         
         return _index_best_solution
 
-    def elitism(self):
+    def crossover(self, i) -> None:
+        l = self._population[i]
+        q = self._population[-2]
+        k = random.randint(0, self._solution_size)
+        
+        for j in range(k, self._solution_size):
+            l[j], q[j] = q[j], l[j]
+
+        rq = q[:len(q)//2] + l[len(l)//2:]
+        rl = q[len(q)//2:] + l[:len(l)//2]
+
+        self._next_population[i] = rq
+        self._next_population[i + 1] = rl
+
+    def elitism(self) -> None:
         _index_best_solution = self.identify_better_solution()
         self._next_population[self.population_size] = self._population[_index_best_solution]
         self._fitness_next_population[self.population_size] = self._fitness[_index_best_solution]
@@ -141,8 +155,8 @@ class BinaryBackpack(ReaderConfig):
         self._avg_fitness_generation = []
         self._worst_fitness_generation = []
         _repeat_counter = 0
-        while not _repeat_counter >= repeat:
 
+        while not _repeat_counter >= repeat:
             self.generate_initial_solution()
             self.evaluate_population()
 
@@ -153,6 +167,7 @@ class BinaryBackpack(ReaderConfig):
             while not self.stop_criterion_reached(self._current_amount_valuations):
                 self.elitism()
                 for i in range(self.population_size):
+                    self.crossover(i)
                     self.mutation(i)
                     self._fitness_next_population[i] = self.objective_function(self._next_population[i])
                     self._current_amount_valuations += 1

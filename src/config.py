@@ -1,4 +1,4 @@
-from src.dataset import Dataset
+from dataset import Dataset
 from typing import Dict
 
 import toml
