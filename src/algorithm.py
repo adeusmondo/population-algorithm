@@ -78,18 +78,24 @@ class BinaryBackpack(ReaderConfig):
         return _index_best_solution
 
     def crossover(self, i) -> None:
+        new_l = []
+        new_q = []
         l = self._population[i]
         q = self._population[-2]
+
+        print("Ponto de Corte")
         k = random.randint(0, self._solution_size)
         
-        for j in range(k, self._solution_size):
-            l[j], q[j] = q[j], l[j]
-
-        rq = q[:len(q)//2] + l[len(l)//2:]
-        rl = q[len(q)//2:] + l[:len(l)//2]
-
-        self._next_population[i] = rq
-        self._next_population[i + 1] = rl
+        for i in range(self._solution_size):
+            if i <= k:
+                new_l.append(l[i])
+                new_q.append(q[i])
+            else:
+                new_l.append(q[i])
+                new_q.append(l[i])
+                
+        self._population[i] = new_l
+        self._population[-2] = new_q
 
     def elitism(self) -> None:
         _index_best_solution = self.identify_better_solution()
